@@ -14,7 +14,7 @@ public class SubTask extends Task {
     public String toString() {
         return "SubTask{" +
                 "epicNumber=" + epicNumber +
-                '}';
+                "} " + super.toString();
     }
 
     @Override
@@ -28,10 +28,12 @@ public class SubTask extends Task {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(super.hashCode(), epicNumber);
     }
 
     public int getEpicNumber() {
+
         return epicNumber;
     }
 }

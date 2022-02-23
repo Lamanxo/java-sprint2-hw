@@ -11,6 +11,11 @@ public class Epic extends Task{
         this.subTasks = new ArrayList<>();
     }
 
+    public void setSubTasks(ArrayList<Integer> subTasks) {
+
+        this.subTasks = subTasks;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -22,21 +27,20 @@ public class Epic extends Task{
 
     @Override
     public int hashCode() {
+
         return Objects.hash(super.hashCode(), subTasks);
     }
 
     public ArrayList<Integer> getSubTasks() {
+
         return subTasks;
     }
 
-    public void setSubTasks(ArrayList<Integer> subTasks) {
-        this.subTasks = subTasks;
-    }
 
     @Override
     public String toString() {
         return "Epic{" +
                 "subTasks=" + subTasks +
-                '}';
+                "} " + super.toString();
     }
 }
