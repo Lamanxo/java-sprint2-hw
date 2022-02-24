@@ -20,6 +20,10 @@ public class Task {
         return name;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public String getDescription() {
 
         return description;

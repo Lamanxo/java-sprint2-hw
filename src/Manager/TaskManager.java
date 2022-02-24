@@ -1,9 +1,11 @@
 package Manager;
 
 import Tasks.Epic;
+import Tasks.Status;
 import Tasks.SubTask;
 import Tasks.Task;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TaskManager {
@@ -18,22 +20,50 @@ public class TaskManager {
     }
 
     public void addTask(Task task) {
+
         tasks.put(task.getId(), task);
     }
 
     public void addSubTask(SubTask subtask) {
         if (epics.containsKey(subtask.getEpicNumber())) {
             subTasks.put(subtask.getId(), subtask);
-            addSubTaskToEpic(epics.get(subtask.getEpicNumber()), subtask.getId());
-            updateEpicStatus(epics.get(subtask.getEpicNumber()));
+            addTaskToEpic(epics.get(subtask.getEpicNumber()), subtask.getId());
         } else {
-            System.out.println("Подзадача НЕ добавлена. " +
-                    "Связанный с подзадачей Эпик не найден.");
+            System.out.println("Подзадача НЕ добавлена. " + "Связанный с подзадачей Эпик не найден.");
         }
 
     }
 
+    public void addTaskToEpic(Epic epic, int idTask) {
+        ArrayList<Integer> id = epic.getSubTasks();
+        id.add(idTask);
+        epic.setSubTasks(id);
+        updateEpic(epic);
+    }
+
+    public void updateEpic(Epic epic) {
+        int statusNEW = 0;
+        int statusDONE = 0;
+        for (Integer subId : epic.getSubTasks()) {
+            if (subTasks.get(subId).getStatus().equals(Status.NEW)) {
+                statusNEW++;
+            } else if (subTasks.get(subId).getStatus().equals(Status.DONE)) {
+                statusDONE++;
+            }
+        }
+        if (epic.getSubTasks().isEmpty()) {
+            epic.setStatus(Status.NEW);
+        } else if (epic.getSubTasks().size() == statusNEW) {
+            epic.setStatus(Status.NEW);
+        } else if (epic.getSubTasks().size() == statusDONE) {
+            epic.setStatus(Status.DONE);
+        } else {
+            epic.setStatus(Status.IN_PROGRESS);
+        }
+    }
+
     public void addEpic(Epic epic) {
+
         epics.put(epic.getId(), epic);
     }
 
@@ -44,8 +74,9 @@ public class TaskManager {
     }
 
     public void printAllTasks() {
-        System.out.println("Все задачи типа Task");
+
         if (!tasks.isEmpty()) {
+            System.out.println("Все задачи типа Task");
             for (Task taskSout : tasks.values()) {
                 System.out.println(taskSout);
             }
@@ -66,8 +97,9 @@ public class TaskManager {
     }
 
     public void printAllSubTasks() {
-        System.out.println("Все задачи типа SubTask");
+
         if (!subTasks.isEmpty()) {
+            System.out.println("Все задачи типа SubTask");
             for (SubTask subSout : subTasks.values()) {
                 System.out.println(subSout);
             }
@@ -112,7 +144,13 @@ public class TaskManager {
             tasks.remove(taskId);
         } else if (subTasks.containsKey(taskId)) {
             subTasks.remove(taskId);
-        } else if (epics.containsKey(taskId)) {  //доработать удаление Эпиков и сабов
+            updateEpic(epics.get(taskId));
+        } else if (epics.containsKey(taskId)) {
+            if (epics.get(taskId).getSubTasks().size() > 0) {
+                for (int subId : epics.get(taskId).getSubTasks()) {
+                    subTasks.remove(subId);
+                }
+            }
             epics.remove(taskId);
         } else {
             System.out.println("Задача с данным иденитификатором не обнаружена");
@@ -120,12 +158,15 @@ public class TaskManager {
     }
 
     public void updateTask(Task task) {
+
         tasks.put(task.getId(), task);
     }
 
     public void updateSubTask(SubTask subTask) {
+
         subTasks.put(subTask.getId(), subTask);
+        updateEpic(epics.get(subTask.getEpicNumber()));
     }
 
-    //public void updateEpic()
+
 }

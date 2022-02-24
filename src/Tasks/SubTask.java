@@ -32,6 +32,10 @@ public class SubTask extends Task {
         return Objects.hash(super.hashCode(), epicNumber);
     }
 
+    public void setEpicNumber(int epicNumber) {
+        this.epicNumber = epicNumber;
+    }
+
     public int getEpicNumber() {
 
         return epicNumber;

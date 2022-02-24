@@ -33,26 +33,50 @@ public class Main {
         idGenerator++;
         taskManager.addSubTask(subt2);
 
+        Epic epic2 = new Epic(idGenerator, "ДР" , "Запланировать ДР");
+        idGenerator++;
+        taskManager.addEpic(epic2);
+
+        SubTask subt3 = new SubTask(idGenerator, "Купить торт", "Я несу тортик...", Status.NEW, 6);
+        idGenerator++;
+        taskManager.addSubTask(subt3);
+
+        System.out.println("_________________________Проверка печати всех задач________________________________");
+        taskManager.printAll();
+
+        System.out.println("_________________________Проверка печати по id задачи______________________________");
+        taskManager.getTaskById(4);
+        taskManager.getTaskById(1);
+        taskManager.getTaskById(6);
+
+        System.out.println("_________________________Проверка метода update____________________________________");
+        SubTask subt11 = new SubTask(4, "Собрать вещи", "Разобрать мебель, картины"
+                , Status.DONE, 3);
+        taskManager.updateSubTask(subt11);
+        taskManager.printAll();
+
+        System.out.println("_________________________Проверка метода update Epic_______________________________");
+        SubTask subt12 = new SubTask(5, "Транспорт", "Найти адекватного водителя"
+                , Status.DONE, 3);
+        taskManager.updateSubTask(subt12);
+        taskManager.printAll();
+
+        System.out.println("_________________________Проверка подзадач определенного Эпика______________________");
         taskManager.printAllSubTasksByEpic(3);
+
+        System.out.println("_________________________Удаляем Эпик и проверяем удаление подзадач_________________");
+        taskManager.removeTaskbyId(3);
         taskManager.printAll();
-        taskManager.getTaskById(2);
 
-        Task task3 = new Task(2, "Обновленная обычная задача", "Сходить в хозмаг", Status.NEW);
-
-        /*taskManager.updateTask(task3);
+        System.out.println("_________________________Удаляем подзадачу и проверяем Эпик_________________________");
+        taskManager.removeTaskbyId(6);
         taskManager.printAll();
-        taskManager.removeTaskbyId(1);
-        taskManager.printAll();*/
- /*
-        ДЛЯ КАЖДОГО ИЗ ТИПА ЗАДАЧ
-                printAllTasks
-                deleteAllTasks
-                getTaskbyId
-                addTask(внутри обьект как параметр)
-                updateTask(передача в виде параметра)
-                deleteTaskByID
 
-                 getSubTasksOfEpicByID
-                        */
+
+
+
+
+
+
     }
 }
