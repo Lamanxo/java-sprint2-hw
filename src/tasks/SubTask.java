@@ -1,11 +1,11 @@
-package Tasks;
+package tasks;
 
 import java.util.Objects;
 
 public class SubTask extends Task {
-    private int epicNumber;
+    private long epicNumber;
 
-    public SubTask(int id, String name, String description, Status status, int epicNumber) {
+    public SubTask(long id, String name, String description, Status status, int epicNumber) {
         super(id, name, description, status);
         this.epicNumber = epicNumber;
     }
@@ -32,11 +32,11 @@ public class SubTask extends Task {
         return Objects.hash(super.hashCode(), epicNumber);
     }
 
-    public void setEpicNumber(int epicNumber) {
+    public void setEpicNumber(long epicNumber) {
         this.epicNumber = epicNumber;
     }
 
-    public int getEpicNumber() {
+    public long getEpicNumber() {
 
         return epicNumber;
     }

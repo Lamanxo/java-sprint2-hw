@@ -1,18 +1,18 @@
-package Manager;
+package manager;
 
-import Tasks.Epic;
-import Tasks.Status;
-import Tasks.SubTask;
-import Tasks.Task;
+import tasks.Epic;
+import tasks.Status;
+import tasks.SubTask;
+import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TaskManager {
-    private HashMap<Integer, Task> tasks;
-    private HashMap<Integer, Epic> epics;
-    private HashMap<Integer, SubTask> subTasks;
-
+    private HashMap<Long, Task> tasks;
+    private HashMap<Long, Epic> epics;
+    private HashMap<Long, SubTask> subTasks;
+    private long IdGen = 0;
     public TaskManager() {
         tasks = new HashMap<>();
         epics = new HashMap<>();
@@ -22,6 +22,12 @@ public class TaskManager {
     public void addTask(Task task) {
 
         tasks.put(task.getId(), task);
+    }
+
+    public long getNewId() {
+        long idNew = ++IdGen;
+        IdGen = idNew;
+        return idNew;
     }
 
     public void addSubTask(SubTask subtask) {
@@ -34,8 +40,8 @@ public class TaskManager {
 
     }
 
-    public void addTaskToEpic(Epic epic, int idTask) {
-        ArrayList<Integer> id = epic.getSubTasks();
+    public void addTaskToEpic(Epic epic, long idTask) {
+        ArrayList<Long> id = epic.getSubTasks();
         id.add(idTask);
         epic.setSubTasks(id);
         updateEpic(epic);
@@ -44,7 +50,7 @@ public class TaskManager {
     public void updateEpic(Epic epic) {
         int statusNEW = 0;
         int statusDONE = 0;
-        for (Integer subId : epic.getSubTasks()) {
+        for (Long subId : epic.getSubTasks()) {
             if (subTasks.get(subId).getStatus().equals(Status.NEW)) {
                 statusNEW++;
             } else if (subTasks.get(subId).getStatus().equals(Status.DONE)) {
@@ -108,10 +114,10 @@ public class TaskManager {
         }
     }
 
-    public void printAllSubTasksByEpic(int taskId) {
+    public void printAllSubTasksByEpic(long taskId) {
         if (epics.containsKey(taskId) && epics.get(taskId).getSubTasks().size() > 0) {
             System.out.println("Список SubTasks для Эпика" + epics.get(taskId));
-            for (int idSout : epics.get(taskId).getSubTasks()) {
+            for (long idSout : epics.get(taskId).getSubTasks()) {
                 System.out.println(subTasks.get(idSout));
             }
         } else {
@@ -126,7 +132,7 @@ public class TaskManager {
         epics.clear();
     }
 
-    public void getTaskById(int taskId) {
+    public void getTaskById(long taskId) {
         if (tasks.containsKey(taskId)) {
             System.out.println("Задача с идентификатором " + taskId + " " + tasks.get(taskId));
         } else if (subTasks.containsKey(taskId)) {
@@ -139,7 +145,7 @@ public class TaskManager {
 
     }
 
-    public void removeTaskbyId(int taskId) {
+    public void removeTaskbyId(long taskId) {
         if (tasks.containsKey(taskId)) {
             tasks.remove(taskId);
         } else if (subTasks.containsKey(taskId)) {
@@ -147,7 +153,7 @@ public class TaskManager {
             updateEpic(epics.get(taskId));
         } else if (epics.containsKey(taskId)) {
             if (epics.get(taskId).getSubTasks().size() > 0) {
-                for (int subId : epics.get(taskId).getSubTasks()) {
+                for (long subId : epics.get(taskId).getSubTasks()) {
                     subTasks.remove(subId);
                 }
             }

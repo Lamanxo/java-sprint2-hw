@@ -1,14 +1,15 @@
-package Tasks;
+package tasks;
 
 import java.util.Objects;
 
 public class Task {
     private String name;
     private String description;
-    private int id;
+    private long id;
     private Status status;
 
-    public Task(int id, String name, String description, Status status) {
+
+    public Task(long id, String name, String description, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -29,7 +30,7 @@ public class Task {
         return description;
     }
 
-    public int getId() {
+    public long getId() {
 
         return id;
     }
@@ -51,8 +52,16 @@ public class Task {
 
     @Override
     public int hashCode() {
+        int hash = 17;
+        if (name != null) {
+            hash = hash + name.hashCode();
+        }
+        hash = hash * 31;
+        if (description != null) {
+            hash = hash + Objects.hash(name, description, id, status);
+        }
 
-        return Objects.hash(name, description, id, status);
+        return hash;
     }
 
     @Override

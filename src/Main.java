@@ -1,44 +1,43 @@
-import Manager.TaskManager;
-import Tasks.Epic;
-import Tasks.Status;
-import Tasks.SubTask;
-import Tasks.Task;
+import manager.TaskManager;
+import tasks.Epic;
+import tasks.Status;
+import tasks.SubTask;
+import tasks.Task;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Пришло время практики!");
-        int idGenerator = 1;
+        
         TaskManager taskManager = new TaskManager();
 
-
-        Task task1 = new Task(idGenerator, "Обычная задача" , "Сходить в магазин", Status.NEW);
-        idGenerator++;
+        Task task1 = new Task(taskManager.getNewId(), "Обычная задача" , "Сходить в магазин", Status.NEW);
+        
         taskManager.addTask(task1);
 
-        Task task2 = new Task(idGenerator, "Обычная задача" , "Сходить в магазин", Status.NEW);
-        idGenerator++;
+        Task task2 = new Task(taskManager.getNewId(), "Обычная задача" , "Сходить в магазин", Status.NEW);
+        
         taskManager.addTask(task2);
 
-        Epic epic1 = new Epic(idGenerator, "Переезд" , "Смена квартиры");
-        idGenerator++;
+        Epic epic1 = new Epic(taskManager.getNewId(), "Переезд" , "Смена квартиры");
+        
         taskManager.addEpic(epic1);
 
-        SubTask subt1 = new SubTask(idGenerator, "Собрать вещи", "Разобрать мебель, картины"
+        SubTask subt1 = new SubTask(taskManager.getNewId(), "Собрать вещи", "Разобрать мебель, картины"
                 , Status.NEW, 3);
-        idGenerator++;
+        
         taskManager.addSubTask(subt1);
 
-        SubTask subt2 = new SubTask(idGenerator, "Транспорт", "Найти адекватного водителя"
+        SubTask subt2 = new SubTask(taskManager.getNewId(), "Транспорт", "Найти адекватного водителя"
                 , Status.NEW, 3);
-        idGenerator++;
+        
         taskManager.addSubTask(subt2);
 
-        Epic epic2 = new Epic(idGenerator, "ДР" , "Запланировать ДР");
-        idGenerator++;
+        Epic epic2 = new Epic(taskManager.getNewId(), "ДР" , "Запланировать ДР");
+        
         taskManager.addEpic(epic2);
 
-        SubTask subt3 = new SubTask(idGenerator, "Купить торт", "Я несу тортик...", Status.NEW, 6);
-        idGenerator++;
+        SubTask subt3 = new SubTask(taskManager.getNewId(), "Купить торт", "Я несу тортик...", Status.NEW, 6);
+        
         taskManager.addSubTask(subt3);
 
         System.out.println("_________________________Проверка печати всех задач________________________________");
@@ -71,12 +70,6 @@ public class Main {
         System.out.println("_________________________Удаляем подзадачу и проверяем Эпик_________________________");
         taskManager.removeTaskbyId(6);
         taskManager.printAll();
-
-
-
-
-
-
 
     }
 }

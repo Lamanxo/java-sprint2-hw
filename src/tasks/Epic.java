@@ -1,17 +1,17 @@
-package Tasks;
+package tasks;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task{
-    private ArrayList<Integer> subTasks;
+    private ArrayList<Long> subTasks;
 
-    public Epic(int id, String name, String description) {
+    public Epic(long id, String name, String description) {
         super(id, name, description, null);
         this.subTasks = new ArrayList<>();
     }
 
-    public void setSubTasks(ArrayList<Integer> subTasks) {
+    public void setSubTasks(ArrayList<Long> subTasks) {
 
         this.subTasks = subTasks;
     }
@@ -31,7 +31,7 @@ public class Epic extends Task{
         return Objects.hash(super.hashCode(), subTasks);
     }
 
-    public ArrayList<Integer> getSubTasks() {
+    public ArrayList<Long> getSubTasks() {
 
         return subTasks;
     }
