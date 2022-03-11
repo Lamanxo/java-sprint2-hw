@@ -1,4 +1,4 @@
-import manager.TaskManager;
+import manager.InMemoryTaskManager;
 import tasks.Epic;
 import tasks.Status;
 import tasks.SubTask;
@@ -8,68 +8,68 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Пришло время практики!");
         
-        TaskManager taskManager = new TaskManager();
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
-        Task task1 = new Task(taskManager.getNewId(), "Обычная задача" , "Сходить в магазин", Status.NEW);
+        Task task1 = new Task(inMemoryTaskManager.getNewId(), "Обычная задача" , "Сходить в магазин", Status.NEW);
         
-        taskManager.addTask(task1);
+        inMemoryTaskManager.addTask(task1);
 
-        Task task2 = new Task(taskManager.getNewId(), "Обычная задача" , "Сходить в магазин", Status.NEW);
+        Task task2 = new Task(inMemoryTaskManager.getNewId(), "Обычная задача" , "Сходить в магазин", Status.NEW);
         
-        taskManager.addTask(task2);
+        inMemoryTaskManager.addTask(task2);
 
-        Epic epic1 = new Epic(taskManager.getNewId(), "Переезд" , "Смена квартиры");
+        Epic epic1 = new Epic(inMemoryTaskManager.getNewId(), "Переезд" , "Смена квартиры");
         
-        taskManager.addEpic(epic1);
+        inMemoryTaskManager.addEpic(epic1);
 
-        SubTask subt1 = new SubTask(taskManager.getNewId(), "Собрать вещи", "Разобрать мебель, картины"
+        SubTask subt1 = new SubTask(inMemoryTaskManager.getNewId(), "Собрать вещи", "Разобрать мебель, картины"
                 , Status.NEW, 3);
         
-        taskManager.addSubTask(subt1);
+        inMemoryTaskManager.addSubTask(subt1);
 
-        SubTask subt2 = new SubTask(taskManager.getNewId(), "Транспорт", "Найти адекватного водителя"
+        SubTask subt2 = new SubTask(inMemoryTaskManager.getNewId(), "Транспорт", "Найти адекватного водителя"
                 , Status.NEW, 3);
         
-        taskManager.addSubTask(subt2);
+        inMemoryTaskManager.addSubTask(subt2);
 
-        Epic epic2 = new Epic(taskManager.getNewId(), "ДР" , "Запланировать ДР");
+        Epic epic2 = new Epic(inMemoryTaskManager.getNewId(), "ДР" , "Запланировать ДР");
         
-        taskManager.addEpic(epic2);
+        inMemoryTaskManager.addEpic(epic2);
 
-        SubTask subt3 = new SubTask(taskManager.getNewId(), "Купить торт", "Я несу тортик...", Status.NEW, 6);
+        SubTask subt3 = new SubTask(inMemoryTaskManager.getNewId(), "Купить торт", "Я несу тортик...", Status.NEW, 6);
         
-        taskManager.addSubTask(subt3);
+        inMemoryTaskManager.addSubTask(subt3);
 
         System.out.println("_________________________Проверка печати всех задач________________________________");
-        taskManager.printAll();
+        inMemoryTaskManager.printAll();
 
         System.out.println("_________________________Проверка печати по id задачи______________________________");
-        taskManager.getTaskById(4);
-        taskManager.getTaskById(1);
-        taskManager.getTaskById(6);
+        inMemoryTaskManager.getTaskById(4);
+        inMemoryTaskManager.getTaskById(1);
+        inMemoryTaskManager.getTaskById(6);
 
         System.out.println("_________________________Проверка метода update____________________________________");
         SubTask subt11 = new SubTask(4, "Собрать вещи", "Разобрать мебель, картины"
                 , Status.DONE, 3);
-        taskManager.updateSubTask(subt11);
-        taskManager.printAll();
+        inMemoryTaskManager.updateSubTask(subt11);
+        inMemoryTaskManager.printAll();
 
         System.out.println("_________________________Проверка метода update Epic_______________________________");
         SubTask subt12 = new SubTask(5, "Транспорт", "Найти адекватного водителя"
                 , Status.DONE, 3);
-        taskManager.updateSubTask(subt12);
-        taskManager.printAll();
+        inMemoryTaskManager.updateSubTask(subt12);
+        inMemoryTaskManager.printAll();
 
         System.out.println("_________________________Проверка подзадач определенного Эпика______________________");
-        taskManager.printAllSubTasksByEpic(3);
+        inMemoryTaskManager.printAllSubTasksByEpic(3);
 
         System.out.println("_________________________Удаляем Эпик и проверяем удаление подзадач_________________");
-        taskManager.removeTaskbyId(3);
-        taskManager.printAll();
+        inMemoryTaskManager.removeTaskById(3);
+        inMemoryTaskManager.printAll();
 
         System.out.println("_________________________Удаляем подзадачу и проверяем Эпик_________________________");
-        taskManager.removeTaskbyId(6);
-        taskManager.printAll();
+        inMemoryTaskManager.removeTaskById(6);
+        inMemoryTaskManager.printAll();
 
     }
 }
