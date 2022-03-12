@@ -7,17 +7,22 @@ import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class InMemoryTaskManager implements TaskManager{
+public class InMemoryTaskManager implements TaskManager {
     private HashMap<Long, Task> tasks;
     private HashMap<Long, Epic> epics;
     private HashMap<Long, SubTask> subTasks;
+    public InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) Managers.getDefaultHistory();
+
     private long IdGen = 0;
     public InMemoryTaskManager() {
         tasks = new HashMap<>();
         epics = new HashMap<>();
         subTasks = new HashMap<>();
+
     }
+
     @Override
     public void addTask(Task task) {
 
@@ -134,10 +139,13 @@ public class InMemoryTaskManager implements TaskManager{
 
     public void getTaskById(long taskId) {
         if (tasks.containsKey(taskId)) {
+            inMemoryHistoryManager.add(tasks.get(taskId));
             System.out.println("Задача с идентификатором " + taskId + " " + tasks.get(taskId));
         } else if (subTasks.containsKey(taskId)) {
+            inMemoryHistoryManager.add(subTasks.get(taskId));
             System.out.println("Задача с идентификатором " + taskId + " " + subTasks.get(taskId));
         } else if (epics.containsKey(taskId)) {
+            inMemoryHistoryManager.add(epics.get(taskId));
             System.out.println("Задача с идентификатором " + taskId + " " + epics.get(taskId));
         } else {
             System.out.println("Задача с данным иденитификатором не обнаружена");

@@ -1,4 +1,6 @@
+import manager.InMemoryHistoryManager;
 import manager.InMemoryTaskManager;
+import manager.Managers;
 import tasks.Epic;
 import tasks.Status;
 import tasks.SubTask;
@@ -8,7 +10,9 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Пришло время практики!");
         
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
+
+
 
         Task task1 = new Task(inMemoryTaskManager.getNewId(), "Обычная задача" , "Сходить в магазин", Status.NEW);
         
@@ -44,9 +48,23 @@ public class Main {
         inMemoryTaskManager.printAll();
 
         System.out.println("_________________________Проверка печати по id задачи______________________________");
-        inMemoryTaskManager.getTaskById(4);
+        inMemoryTaskManager.getTaskById(3);
+        inMemoryTaskManager.getTaskById(3);
+        inMemoryTaskManager.getTaskById(3);
+        inMemoryTaskManager.getTaskById(1);
+        inMemoryTaskManager.getTaskById(1);
+        inMemoryTaskManager.getTaskById(1);
+        inMemoryTaskManager.getTaskById(1);
+        inMemoryTaskManager.getTaskById(1);
+        inMemoryTaskManager.getTaskById(1);
         inMemoryTaskManager.getTaskById(1);
         inMemoryTaskManager.getTaskById(6);
+        inMemoryTaskManager.getTaskById(6);
+        inMemoryTaskManager.getTaskById(3);
+        inMemoryTaskManager.getTaskById(3);
+
+        System.out.println("_________________________Проверка метода истории просмотра__________________________");
+        inMemoryTaskManager.inMemoryHistoryManager.getHistory();
 
         System.out.println("_________________________Проверка метода update____________________________________");
         SubTask subt11 = new SubTask(4, "Собрать вещи", "Разобрать мебель, картины"
@@ -70,6 +88,5 @@ public class Main {
         System.out.println("_________________________Удаляем подзадачу и проверяем Эпик_________________________");
         inMemoryTaskManager.removeTaskById(6);
         inMemoryTaskManager.printAll();
-
     }
 }
