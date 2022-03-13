@@ -30,4 +30,6 @@ public interface TaskManager {
 
     void updateSubTask(SubTask subTask);
 
+    void history();
+
 }

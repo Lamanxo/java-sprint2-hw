@@ -1,18 +1,17 @@
 package manager;
 
 import tasks.Task;
-
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+
 public class InMemoryHistoryManager implements HistoryManager {
-
-
-
+    LinkedList<Task> viewedTasks = new LinkedList<>();
+    private final int maxViewedTasks = 10;
 
     @Override
     public void add(Task task) {
-        if (viewedTasks.size() >= 10) {
+        if (viewedTasks.size() >= maxViewedTasks) {
             viewedTasks.remove(0);
             viewedTasks.add(task);
         } else {
@@ -20,15 +19,9 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    @Override
-    public void getHistory() {
-        if (!viewedTasks.isEmpty()) {
-            System.out.println("Все просмотренные задачи:");
-            for (Task taskSout : viewedTasks) {
-                System.out.println(taskSout);
-            }
-        } else {
-            System.out.println("Просмотренных задач не обнаружено");
-        }
+    public List<Task> getHistory() {
+        return viewedTasks;
     }
+
+
 }

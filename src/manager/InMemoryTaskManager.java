@@ -7,13 +7,12 @@ import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private HashMap<Long, Task> tasks;
     private HashMap<Long, Epic> epics;
     private HashMap<Long, SubTask> subTasks;
-    public InMemoryHistoryManager inMemoryHistoryManager = (InMemoryHistoryManager) Managers.getDefaultHistory();
+    HistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
     private long IdGen = 0;
     public InMemoryTaskManager() {
@@ -182,5 +181,11 @@ public class InMemoryTaskManager implements TaskManager {
         updateEpic(epics.get(subTask.getEpicNumber()));
     }
 
+    @Override
+    public void history() {
+        for (Task tasksSout : inMemoryHistoryManager.getHistory())
+        System.out.println(tasksSout);
+
+    }
 
 }

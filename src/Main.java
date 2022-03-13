@@ -1,3 +1,4 @@
+import manager.HistoryManager;
 import manager.InMemoryHistoryManager;
 import manager.InMemoryTaskManager;
 import manager.Managers;
@@ -10,8 +11,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Пришло время практики!");
         
-        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
-
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
 
         Task task1 = new Task(inMemoryTaskManager.getNewId(), "Обычная задача" , "Сходить в магазин", Status.NEW);
@@ -64,7 +64,7 @@ public class Main {
         inMemoryTaskManager.getTaskById(3);
 
         System.out.println("_________________________Проверка метода истории просмотра__________________________");
-        inMemoryTaskManager.inMemoryHistoryManager.getHistory();
+        inMemoryTaskManager.history();
 
         System.out.println("_________________________Проверка метода update____________________________________");
         SubTask subt11 = new SubTask(4, "Собрать вещи", "Разобрать мебель, картины"
