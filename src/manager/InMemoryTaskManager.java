@@ -19,8 +19,8 @@ public class InMemoryTaskManager implements TaskManager {
         tasks = new HashMap<>();
         epics = new HashMap<>();
         subTasks = new HashMap<>();
-
     }
+
 
     @Override
     public void addTask(Task task) {
@@ -155,16 +155,20 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeTaskById(long taskId) {
         if (tasks.containsKey(taskId)) {
             tasks.remove(taskId);
+            inMemoryHistoryManager.removeId(taskId);
         } else if (subTasks.containsKey(taskId)) {
             subTasks.remove(taskId);
             updateEpic(epics.get(taskId));
+            inMemoryHistoryManager.removeId(taskId);
         } else if (epics.containsKey(taskId)) {
             if (epics.get(taskId).getSubTasks().size() > 0) {
                 for (long subId : epics.get(taskId).getSubTasks()) {
                     subTasks.remove(subId);
+                    inMemoryHistoryManager.removeId(subId);
                 }
             }
             epics.remove(taskId);
+            inMemoryHistoryManager.removeId(taskId);
         } else {
             System.out.println("Задача с данным иденитификатором не обнаружена");
         }
