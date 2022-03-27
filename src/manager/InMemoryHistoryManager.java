@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.ArrayList;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static Map<Long, Node> viewedTasks = new HashMap<>();
-    private static Node nodeHead = null;
-    private static Node nodeTail = null;
+    private Map<Long, Node> viewedTasks = new HashMap<>();
+    private Node nodeHead = null;
+    private Node nodeTail = null;
 
     private void linkLast(Task task) {
         if (nodeHead == null) {

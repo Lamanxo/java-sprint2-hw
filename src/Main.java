@@ -1,7 +1,4 @@
-import manager.HistoryManager;
-import manager.InMemoryHistoryManager;
 import manager.InMemoryTaskManager;
-import manager.Managers;
 import tasks.Epic;
 import tasks.Status;
 import tasks.SubTask;
@@ -10,7 +7,6 @@ import tasks.Task;
 public class Main {
     public static void main(String[] args) {
         System.out.println("Пришло время практики!");
-
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
 
@@ -58,43 +54,13 @@ public class Main {
         inMemoryTaskManager.getTaskById(4);
         inMemoryTaskManager.getTaskById(2);
         inMemoryTaskManager.getTaskById(7);
-
-
-
         System.out.println("_________________________Проверка метода истории просмотра__________________________");
-        inMemoryTaskManager.history();
+        System.out.println(inMemoryTaskManager.history());
         System.out.println("_________________________Удаляем задачу из истории__________________________________");
         inMemoryTaskManager.removeTaskById(1);
-        inMemoryTaskManager.history();
+        System.out.println(inMemoryTaskManager.history());
         System.out.println("_________________________Удаляем Эпик и подзадачи из истории________________________");
         inMemoryTaskManager.removeTaskById(3);
-        inMemoryTaskManager.history();
-
-
-
-
-        /*System.out.println("_________________________Проверка метода update____________________________________");
-        SubTask subt11 = new SubTask(4, "Собрать вещи", "Разобрать мебель, картины"
-                , Status.DONE, 3);
-        inMemoryTaskManager.updateSubTask(subt11);
-        inMemoryTaskManager.printAll();
-
-        System.out.println("_________________________Проверка метода update Epic_______________________________");
-        SubTask subt12 = new SubTask(5, "Транспорт", "Найти адекватного водителя"
-                , Status.DONE, 3);
-        inMemoryTaskManager.updateSubTask(subt12);
-        inMemoryTaskManager.printAll();
-
-        System.out.println("_________________________Проверка подзадач определенного Эпика______________________");
-        inMemoryTaskManager.printAllSubTasksByEpic(3);
-
-        System.out.println("_________________________Удаляем Эпик и проверяем удаление подзадач_________________");
-        inMemoryTaskManager.removeTaskById(3);
-        inMemoryTaskManager.printAll();
-
-        System.out.println("_________________________Удаляем подзадачу и проверяем Эпик_________________________");
-        inMemoryTaskManager.removeTaskById(6);
-        inMemoryTaskManager.printAll();
-    */
+        System.out.println(inMemoryTaskManager.history());
     }
 }

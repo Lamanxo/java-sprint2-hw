@@ -4,6 +4,8 @@ import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
+import java.util.List;
+
 public interface TaskManager {
 
     void addTask(Task task);
@@ -30,6 +32,6 @@ public interface TaskManager {
 
     void updateSubTask(SubTask subTask);
 
-    void history();
+    List<Task> history();
 
 }
