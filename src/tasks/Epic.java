@@ -1,46 +1,56 @@
 package tasks;
 
+import static tasks.Status.*;
+
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class Epic extends Task{
-    private ArrayList<Long> subTasks;
+public class Epic extends Task {
+    private ArrayList<Subtask> subTaskslist = new ArrayList<>();
 
-    public Epic(long id, String name, String description) {
-        super(id, name, description, null);
-        this.subTasks = new ArrayList<>();
+    public Epic(String name, String description) {
+        super(name, description);
     }
 
-    public void setSubTasks(ArrayList<Long> subTasks) {
-
-        this.subTasks = subTasks;
+    public ArrayList<Subtask> getSubTaskslist() {
+        return subTaskslist;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Epic epic = (Epic) o;
-        return Objects.equals(subTasks, epic.subTasks);
+    public void setSubTaskslist(ArrayList<Subtask> subTaskslist) {
+        this.subTaskslist = subTaskslist;
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(super.hashCode(), subTasks);
+    public void addSubtaskInList(Subtask subtask) {
+        subTaskslist.add(subtask);
     }
 
-    public ArrayList<Long> getSubTasks() {
-
-        return subTasks;
+    public void setStatus() {
+        int countDoneStatus = 0;
+        int countNewStatus = 0;
+        for (Subtask subtask : subTaskslist) {
+            if (subtask.getStatus().equals(IN_PROGRESS)) {
+                setStatus(IN_PROGRESS);
+            }
+            if (subtask.getStatus().equals(DONE)) {
+                countDoneStatus++;
+            }
+            if (subtask.getStatus().equals(NEW)) {
+                countNewStatus++;
+            }
+        }
+        if (countDoneStatus == subTaskslist.size() && !subTaskslist.isEmpty()) {
+            setStatus(DONE);
+        } else if (countDoneStatus > 0 && countDoneStatus < subTaskslist.size()) {
+            setStatus(IN_PROGRESS);
+        } else if (subTaskslist.isEmpty() || countNewStatus == subTaskslist.size()) {
+            setStatus(NEW);
+        }
     }
-
 
     @Override
     public String toString() {
-        return "Epic{" +
-                "subTasks=" + subTasks +
-                "} " + super.toString();
+        return super.getTaskId() + "," + TaskType.EPIC + "," + super.getName() + "," + super.getStatus() +
+                "," + super.getDescription() + "," + "Subtasks:" + subTaskslist;
     }
+
+
 }
