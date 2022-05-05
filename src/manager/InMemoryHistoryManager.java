@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.ArrayList;
 
 public class InMemoryHistoryManager<E extends Task> implements HistoryManager {
-    private final Map<Integer, Node<E>> nodesMap = new HashMap<>();
+    private final Map<Integer, Node<E>> historyMap = new HashMap<>();
     private Node<E> first;
     private Node<E> last;
 
@@ -16,10 +16,10 @@ public class InMemoryHistoryManager<E extends Task> implements HistoryManager {
     public void add(Task task) {
         if (task == null)
             return;
-        if (nodesMap.containsKey(task.getTaskId())) {
+        if (historyMap.containsKey(task.getTaskId())) {
             remove(task.getTaskId());
         }
-        nodesMap.put(task.getTaskId(), linkLast((E) task));
+        historyMap.put(task.getTaskId(), linkLast((E) task));
     }
 
     @Override
@@ -35,9 +35,9 @@ public class InMemoryHistoryManager<E extends Task> implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        if (nodesMap.containsKey(id)) {
-            removeNode(nodesMap.get(id));
-            nodesMap.remove(id);
+        if (historyMap.containsKey(id)) {
+            removeNode(historyMap.get(id));
+            historyMap.remove(id);
         }
     }
 

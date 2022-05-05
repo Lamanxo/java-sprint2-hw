@@ -10,9 +10,15 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
+public class FileBackedTasksManager extends InMemoryTaskManager {
     private static List<String> taskCsv = writeCsvToArray();
-    private static File file = new File("file.csv");
+    private static File file;
+    private static final String TASK_FIELDS = "ID;TYPE;NAME;STATUS;DESCRIPTION;EPIC";
+
+    public FileBackedTasksManager (String filePath) {
+        super();
+        this.file = new File(filePath);
+    }
 
     public static void setFile(File file) {
         FileBackedTasksManager.file = file;
@@ -20,7 +26,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     private void save() {
         try (PrintWriter printWriter = new PrintWriter(file, "Windows-1251")) {
-            printWriter.write("ID;TYPE;NAME;STATUS;DESCRIPTION;EPIC" + "\n");
+            printWriter.write(TASK_FIELDS + "\n");
             for (Task task : getAllTasks()) {
                 printWriter.write(task.toString().replace(",", ";") + "\n");
             }
@@ -49,7 +55,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager.taskCsv = FileBackedTasksManager.writeCsvToArray();
         FileBackedTasksManager.setFile(file);
-        FileBackedTasksManager fileBack = new FileBackedTasksManager();
+        FileBackedTasksManager fileBack = new FileBackedTasksManager(file.getPath());
         taskCsv.remove(0);
         taskCsv.remove("HISTORY");
         for (String line : taskCsv) {
@@ -159,8 +165,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public void updateTask(int taskId, Task taskNew) {
-        super.updateTask(taskId, taskNew);
+    public void updateTask(Task taskNew) {
+        super.updateTask(taskNew);
         save();
     }
 
@@ -177,8 +183,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public void updateEpic(int epicId, Epic epicNew) {
-        super.updateEpic(epicId, epicNew);
+    public void updateEpic(Epic epicNew) {
+        super.updateEpic(epicNew);
         save();
     }
 
@@ -195,8 +201,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public void updateSubtask(int subtaskId, Subtask subtasNew) {
-        super.updateSubtask(subtaskId, subtasNew);
+    public void updateSubtask(Subtask subtaskNew) {
+        super.updateSubtask(subtaskNew);
         save();
     }
 
@@ -214,7 +220,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public static void main(String[] args) {
 
-        FileBackedTasksManager fileBacked = new FileBackedTasksManager();
+        FileBackedTasksManager fileBacked = new FileBackedTasksManager("file.csv");
         Task task = new Task("обычная задача", "Обычное описание", Status.NEW);
         Task task1 = new Task("Обычная задача2", "Обычное описание2", Status.NEW);
 
@@ -236,5 +242,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
         FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(new File
                 ("file.csv"));
+
+        System.out.println(fileBacked.writeCsvToArray().equals(fileBackedTasksManager.writeCsvToArray()));
     }
 }

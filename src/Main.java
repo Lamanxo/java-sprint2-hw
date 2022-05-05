@@ -1,10 +1,12 @@
-import manager.InMemoryTaskManager;
+import manager.Managers;
+import manager.TaskManager;
 
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Пришло время практики!");
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+
 
 
     }
