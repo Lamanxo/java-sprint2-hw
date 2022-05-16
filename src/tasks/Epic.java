@@ -1,56 +1,142 @@
 package tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Objects;
+
 import static tasks.Status.*;
 
-import java.util.ArrayList;
-
-public class Epic extends Task {
-    private ArrayList<Subtask> epicSublist = new ArrayList<>();
+public class Epic extends Task{
+    private ArrayList<Subtask> subTaskList = new ArrayList<>();
 
     public Epic(String name, String description) {
+
         super(name, description);
     }
 
-    public ArrayList<Subtask> getEpicSublist() {
-        return epicSublist;
+    public Epic(String name, String description, Status status) {
+
+        super(name, description, status);
     }
 
-    public void setEpicSublist(ArrayList<Subtask> epicSublist) {
-        this.epicSublist = epicSublist;
-    }
+    public Epic(int id, String name, String description, Status status) {
 
-    public void addSubtaskInList(Subtask subtask) {
-        epicSublist.add(subtask);
+        super(name, description, status);
     }
 
     public void setStatus() {
-        int countDoneStatus = 0;
-        int countNewStatus = 0;
-        for (Subtask subtask : epicSublist) {
-            if (subtask.getStatus().equals(IN_PROGRESS)) {
+        long countDoneStatus = 0;
+        long countNewStatus = 0;
+        for (Subtask subTask : subTaskList) {
+            if (subTask.getStatus().equals(IN_PROGRESS)) {
                 setStatus(IN_PROGRESS);
             }
-            if (subtask.getStatus().equals(DONE)) {
+            if (subTask.getStatus().equals(DONE)) {
                 countDoneStatus++;
             }
-            if (subtask.getStatus().equals(NEW)) {
+            if (subTask.getStatus().equals(NEW)) {
                 countNewStatus++;
             }
         }
-        if (countDoneStatus == epicSublist.size() && !epicSublist.isEmpty()) {
+        if (countDoneStatus == subTaskList.size() && !subTaskList.isEmpty()) {
             setStatus(DONE);
-        } else if (countDoneStatus > 0 && countDoneStatus < epicSublist.size()) {
+        } else if (countDoneStatus > 0 && countDoneStatus < subTaskList.size()) {
             setStatus(IN_PROGRESS);
-        } else if (epicSublist.isEmpty() || countNewStatus == epicSublist.size()) {
+        } else if (subTaskList.isEmpty() || countNewStatus == subTaskList.size()) {
             setStatus(NEW);
         }
     }
 
     @Override
-    public String toString() {
-        return super.getTaskId() + "," + TaskType.EPIC + "," + super.getName() + "," + super.getStatus() +
-                "," + super.getDescription() + "," + "Subtasks:" + epicSublist;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Epic epic = (Epic) o;
+        return Objects.equals(subTaskList, epic.subTaskList);
     }
 
+    public ArrayList<Subtask> getEpicSublist() {
+
+        return subTaskList;
+    }
+
+    public void setEpicSublist(ArrayList<Subtask> subTaskList) {
+
+        this.subTaskList = subTaskList;
+    }
+
+    /*public int getId() {
+        return super.getTaskId();
+    }*/
+
+    public void addSubtaskInList(Subtask subtask) {
+
+        subTaskList.add(subtask);
+    }
+
+    @Override
+    public LocalDateTime getStartTime() {
+        if (subTaskList.isEmpty()) {
+            return null;
+        }
+        LocalDateTime startTime = LocalDateTime.MAX;
+        for (Subtask subtask : subTaskList) {
+            if (subtask.getStartTime() == null) {
+                continue;
+            }
+            if (subtask.getStartTime() != null && startTime.isAfter(subtask.getStartTime())) {
+                startTime = subtask.getStartTime();
+            }
+        }
+        return startTime;
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        if (subTaskList.isEmpty()) {
+            return null;
+        }
+        LocalDateTime endTime = LocalDateTime.MIN;
+        for (Subtask subtask : subTaskList) {
+            if (subtask.getEndTime() == null) {
+                continue;
+            }
+            if (subtask.getEndTime() != null && endTime.isBefore(subtask.getEndTime())) {
+                endTime = subtask.getEndTime();
+            }
+        }
+        return endTime;
+    }
+
+    @Override
+    public Duration getDuration() {
+        if (subTaskList.isEmpty()) {
+            return null;
+        }
+        Duration duration = Duration.ZERO;
+        for (Subtask subtask : subTaskList) {
+            if (subtask.getDuration() != null) {
+                duration = duration.plus(subtask.getDuration());
+            }
+        }
+        return duration;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), subTaskList);
+    }
+
+
+
+    @Override
+    public String toString() {
+        return super.getTaskId() + "," + TaskType.EPIC + "," + super.getName() + "," + super.getStatus() +
+                "," + super.getDescription() + "," + ";" + getStartTime() + "," +
+                getDuration() + "," + getEndTime();
+    }
 
 }

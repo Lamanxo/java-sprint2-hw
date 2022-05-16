@@ -13,7 +13,7 @@ import java.util.List;
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private static List<String> taskCsv = writeCsvToArray();
     private static File file;
-    private static final String TASK_FIELDS = "ID;TYPE;NAME;STATUS;DESCRIPTION;EPIC";
+    private static final String TASK_FIELDS = "ID;TYPE;NAME;STATUS;DESCRIPTION;EPIC;StartTime;Duration;EndTime";
 
     public FileBackedTasksManager (String filePath) {
         super();
