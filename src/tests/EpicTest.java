@@ -1,5 +1,3 @@
-package tests;
-
 import manager.InMemoryTaskManager;
 import org.junit.jupiter.api.Test;
 import tasks.*;
@@ -7,51 +5,53 @@ import tasks.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
-    InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-    Subtask subtask = new Subtask("Subtask-1", "0", Status.NEW, 1);
-    Subtask subtask1 = new Subtask("Subtask-1", "0", Status.NEW, 1);
-    Epic epic = new Epic("Epic_TEST", "TEST");
+    InMemoryTaskManager testManager = new InMemoryTaskManager();
+
+    Epic epic = new Epic("EpicTest", "DescriptionEpicTest");
+    Subtask testSubtask1 = new Subtask("testSubstaskName1", "testSubDesc1", Status.NEW, 1);
+    Subtask testSubstask2 = new Subtask("testSubtaskName2", "testSubDesc2", Status.NEW, 1);
+
 
     @Test
-    void test1_ShoulEpicStattusWithOutSubtasks() {
-        inMemoryTaskManager.addEpic(epic);
-        assertEquals(Status.NEW, inMemoryTaskManager.getEpic(1).getStatus());
+    public void EpicNewWithOutSubtasks() {
+        testManager.addEpic(epic);
+        assertEquals(Status.NEW, testManager.getEpic(1).getStatus());
     }
 
     @Test
-    void test2_EpicStattusWithSubtasksNew() {
-        inMemoryTaskManager.addEpic(epic);
-        inMemoryTaskManager.addSubtask(subtask);
-        inMemoryTaskManager.addSubtask(subtask1);
-        assertEquals(Status.NEW, inMemoryTaskManager.getEpic(1).getStatus());
+    public void EpicNewWithSubtasksNew() {
+        testManager.addEpic(epic);
+        testManager.addSubtask(testSubtask1);
+        testManager.addSubtask(testSubstask2);
+        assertEquals(Status.NEW, testManager.getEpic(1).getStatus());
     }
 
     @Test
-    void test3_EpicStatusWithSubtasksDone(){
-        inMemoryTaskManager.addEpic(epic);
-        subtask.setStatus(Status.DONE);
-        subtask1.setStatus(Status.DONE);
-        inMemoryTaskManager.addSubtask(subtask);
-        inMemoryTaskManager.addSubtask(subtask1);
-        assertEquals(Status.DONE, inMemoryTaskManager.getEpic(1).getStatus());
+    public void EpicDoneWithSubtasksDone(){
+        testManager.addEpic(epic);
+        testSubtask1.setStatus(Status.DONE);
+        testSubstask2.setStatus(Status.DONE);
+        testManager.addSubtask(testSubtask1);
+        testManager.addSubtask(testSubstask2);
+        assertEquals(Status.DONE, testManager.getEpic(1).getStatus());
     }
 
     @Test
-    void test4_EpicStatusWithSubtasksNewAndDone(){
-        inMemoryTaskManager.addEpic(epic);
-        subtask1.setStatus(Status.DONE);
-        inMemoryTaskManager.addSubtask(subtask);
-        inMemoryTaskManager.addSubtask(subtask1);
-        assertEquals(Status.IN_PROGRESS, inMemoryTaskManager.getEpic(1).getStatus());
+    public void EpicInProgressWithSubtasksNewAndDone(){
+        testManager.addEpic(epic);
+        testSubstask2.setStatus(Status.DONE);
+        testManager.addSubtask(testSubtask1);
+        testManager.addSubtask(testSubstask2);
+        assertEquals(Status.IN_PROGRESS, testManager.getEpic(1).getStatus());
     }
 
     @Test
-    void test5_EpicStatusWithSubtasksInProgress(){
-        inMemoryTaskManager.addEpic(epic);
-        subtask.setStatus(Status.IN_PROGRESS);
-        subtask1.setStatus(Status.IN_PROGRESS);
-        inMemoryTaskManager.addSubtask(subtask);
-        inMemoryTaskManager.addSubtask(subtask1);
-        assertEquals(Status.IN_PROGRESS, inMemoryTaskManager.getEpic(1).getStatus());
+    public void EpicInProgressWithSubtasksInProgress(){
+        testManager.addEpic(epic);
+        testSubtask1.setStatus(Status.IN_PROGRESS);
+        testSubstask2.setStatus(Status.IN_PROGRESS);
+        testManager.addSubtask(testSubtask1);
+        testManager.addSubtask(testSubstask2);
+        assertEquals(Status.IN_PROGRESS, testManager.getEpic(1).getStatus());
     }
 }

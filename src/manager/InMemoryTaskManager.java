@@ -13,6 +13,10 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private int idGen;
 
+    public HistoryManager getInMemoryHistoryManager() {
+        return inMemoryHistoryManager;
+    }
+
     @Override
     public void setIdGen() {
         idGen++;
@@ -102,21 +106,7 @@ public class InMemoryTaskManager implements TaskManager {
         epics.remove(epicId);
         inMemoryHistoryManager.remove(epicId);
 
-        /*Epic epic = epics.get(epicId);
-        ArrayList<Integer> keyList = new ArrayList<>();
-        for (Subtask subtask : epic.getEpicSublist()) {
-            for (int key : subtasks.keySet()) {
-                if (subtask.equals(subtasks.get(key))) {
-                    keyList.add(key);
-                }
-            }
-        }
-        for (int key : keyList) {
-            subtasks.remove(key);
-            inMemoryHistoryManager.remove(key);
-        }
-        inMemoryHistoryManager.remove(epicId);
-        epics.remove(epicId);*/
+
     }
 
     @Override

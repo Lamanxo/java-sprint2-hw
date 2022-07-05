@@ -22,7 +22,7 @@ public class Epic extends Task{
 
     public Epic(int id, String name, String description, Status status) {
 
-        super(name, description, status);
+        super(id, name, description, status);
     }
 
     public void setStatus() {
@@ -66,10 +66,6 @@ public class Epic extends Task{
 
         this.subTaskList = subTaskList;
     }
-
-    /*public int getId() {
-        return super.getTaskId();
-    }*/
 
     public void addSubtaskInList(Subtask subtask) {
 

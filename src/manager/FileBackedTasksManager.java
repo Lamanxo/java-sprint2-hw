@@ -239,7 +239,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fileBacked.getTask(1);
         fileBacked.getEpic(3);
         fileBacked.getEpic(5);
-
+        System.out.println(fileBacked.getEpic(3));
         FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(new File
                 ("file.csv"));
 
