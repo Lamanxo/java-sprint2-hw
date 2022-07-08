@@ -8,16 +8,13 @@ import java.util.Objects;
 import static tasks.Status.*;
 
 public class Epic extends Task{
+
     private ArrayList<Subtask> subTaskList = new ArrayList<>();
 
     public Epic(String name, String description) {
 
         super(name, description);
-    }
 
-    public Epic(String name, String description, Status status) {
-
-        super(name, description, status);
     }
 
     public Epic(int id, String name, String description, Status status) {
@@ -119,13 +116,6 @@ public class Epic extends Task{
         }
         return duration;
     }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(super.hashCode(), subTaskList);
-    }
-
 
 
     @Override

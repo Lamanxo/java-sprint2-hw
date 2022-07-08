@@ -14,8 +14,8 @@ public class Task {
 
 
     public Task(String name, String description) {
-        this.name = this.name;
-        this.description = this.description;
+        this.name = name;
+        this.description = description;
 
     }
 
@@ -64,6 +64,7 @@ public class Task {
     }
 
     public void setStartTime(LocalDateTime startTime) {
+
         this.startTime = startTime;
     }
 

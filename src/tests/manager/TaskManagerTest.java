@@ -43,11 +43,11 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void addUpdateAndDeleteEpicTest() {
-        taskManager.addEpic(new Epic ("epic1", "epic1Desc", Status.NEW));
+        taskManager.addEpic(new Epic ("epic1", "epic1Desc"));
         Epic epic = taskManager.getEpic(1);
         assertNotNull(epic, "Эпики не возвращаются.");
         assertEquals(epic.getTaskId(), 1, "Эпики по ID не совпадают");
-        taskManager.updateEpic(new Epic (1,"epic1_upd", "epic1Desc_upd", Status.NEW));
+        taskManager.updateEpic(new Epic (1,"epic1_upd", "epic1Desc_upd", NEW));
         assertEquals(taskManager.getEpic(1).getStatus(), Status.NEW,"Метод обновления не работает");
         final List<Epic> epics = taskManager.getAllEpics();
         assertEquals(1, epics.size(), "Неверное количество задач.");
@@ -61,7 +61,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void addUpdateAndDeleteSubtaskTest() {
-        taskManager.addEpic(new Epic ("epic1", "epic1Desc", Status.NEW));
+        taskManager.addEpic(new Epic ("epic1", "epic1Desc"));
         taskManager.addSubtask(new Subtask("subtask1", "subtask1Desc", Status.NEW, 1));
         Subtask sub = taskManager.getSubtask(2);
         assertNotNull(sub,"Сабы не возвращаются.");
@@ -73,7 +73,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(taskManager.getSubtask(2).getStatus(), Status.IN_PROGRESS, "Метод обновления Саба не работает");
         taskManager.deleteSubtask(2);
         assertNull(taskManager.getSubtask(2), "Трекер не пустой");
-        taskManager.addEpic(new Epic ("epic1", "epic1Desc", Status.NEW));
+        taskManager.addEpic(new Epic ("epic1", "epic1Desc"));
         taskManager.addSubtask(new Subtask("subtask1", "subtask1Desc", Status.NEW, 1));
         final List<Subtask> subs = taskManager.getAllSubtasks();
         assertEquals(1,subs.size(),"Метод не возвращает Сабы");
@@ -87,7 +87,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void getHistoryTest() {
         taskManager.addTask(new Task ("task1", "task1Desc", Status.IN_PROGRESS));
-        taskManager.addEpic(new Epic ("epic1", "epic1Desc", Status.NEW));
+        taskManager.addEpic(new Epic ("epic1", "epic1Desc"));
         taskManager.addSubtask(new Subtask("subtask1", "subtask1Desc", Status.DONE, 2));
         taskManager.getEpic(2);
         taskManager.getTask(1);

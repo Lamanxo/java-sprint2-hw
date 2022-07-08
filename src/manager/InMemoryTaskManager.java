@@ -2,16 +2,31 @@ package manager;
 
 import tasks.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.function.Predicate;
 
 public class InMemoryTaskManager implements TaskManager {
+    private int idGen;
     private HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private int idGen;
+    private TreeSet<Task> prioritizedTasks = new TreeSet<>(new Comparator<Task>() {
+        @Override
+        public int compare(Task o1, Task o2) {
+            if (o1.getStartTime() == null || o2.getStartTime() == null) {
+                return 1;
+            } else {
+                return o1.getStartTime().compareTo(o2.getStartTime());
+            }
+        }
+    });
+    @Override
+    public Set<Task> getPrioritizedTasks() {
+        return prioritizedTasks;
+    }
 
     public HistoryManager getInMemoryHistoryManager() {
         return inMemoryHistoryManager;
@@ -20,15 +35,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void setIdGen() {
         idGen++;
-    }
-
-    @Override
-    public void addTask(Task task) {
-        if (task == null)
-            return;
-        setIdGen();
-        task.setTaskId(idGen);
-        tasks.put(idGen, task);
     }
 
     @Override
@@ -49,6 +55,7 @@ public class InMemoryTaskManager implements TaskManager {
             tasks.put(taskNew.getTaskId(), taskNew);
         }
     }
+
 
     @Override
     public void deleteTask(int taskId) {
@@ -127,11 +134,53 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         if (!epics.containsKey(subtask.getEpicNumber()))
             return;
-        putSubtaskInEpic(subtask);
-        setIdGen();
-        subtask.setTaskId(idGen);
-        subtasks.put(idGen, subtask);
+        if (noCrossingByTime.test(subtask)) {
+            putSubtaskInEpic(subtask);
+            setIdGen();
+            subtask.setTaskId(idGen);
+            subtasks.put(idGen, subtask);
+            prioritizedTasks.add(subtask);
+        }
+
     }
+
+    @Override
+    public void addTask(Task task) {
+        if (task == null)
+            return;
+        if (noCrossingByTime.test(task)) {
+            setIdGen();
+            task.setTaskId(idGen);
+            tasks.put(idGen, task);
+            prioritizedTasks.add(task);
+        }
+    }
+
+    private final Predicate<Task> noCrossingByTime = new Predicate<Task>() {
+        @Override
+        public boolean test(Task newTask) {
+            if (newTask.getStartTime() == null) {
+                return true;
+            }
+            LocalDateTime newTaskStart = newTask.getStartTime();
+            LocalDateTime newTaskFinish = newTask.getEndTime();
+            for (Task task : prioritizedTasks) {
+                LocalDateTime taskStart = task.getStartTime();
+                LocalDateTime taskFinish = task.getEndTime();
+                if (newTaskStart.isBefore(taskStart) && newTaskFinish.isAfter(taskStart)) {
+                    return false;
+                }
+                if (newTaskStart.isBefore(taskFinish) && newTaskFinish.isAfter(taskFinish)) {
+                    return false;
+                }
+                if ((newTaskStart.isBefore(taskStart) && newTaskFinish.isBefore(taskStart)) &&
+                        (newTaskStart.isBefore(taskFinish) && newTaskFinish.isBefore(taskFinish))) {
+                    break;
+                }
+            }
+            return true;
+        }
+    };
 
     private void putSubtaskInEpic(Subtask subtask) {
         Epic epic = epics.get(subtask.getEpicNumber());
@@ -203,4 +252,5 @@ public class InMemoryTaskManager implements TaskManager {
     public List<Task> history() {
         return inMemoryHistoryManager.getHistory();
     }
+
 }
