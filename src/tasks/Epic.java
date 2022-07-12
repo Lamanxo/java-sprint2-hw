@@ -121,7 +121,7 @@ public class Epic extends Task{
     @Override
     public String toString() {
         return super.getTaskId() + "," + TaskType.EPIC + "," + super.getName() + "," + super.getStatus() +
-                "," + super.getDescription() + "," + ";" + getStartTime() + "," +
+                "," + super.getDescription() + "," + getStartTime() + "," +
                 getDuration() + "," + getEndTime();
     }
 

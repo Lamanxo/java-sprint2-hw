@@ -129,6 +129,6 @@ public class Task {
     @Override
     public String toString() {
         return id + "," + TaskType.TASK + "," +
-                name + "," + status + "," + description + "," + ";" + startTime + "," + duration + "," + getEndTime();
+                name + "," + status + "," + description + "," + startTime + "," + duration + "," + getEndTime();
     }
 }

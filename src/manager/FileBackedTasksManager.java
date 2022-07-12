@@ -70,10 +70,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fb.getTask(1);
         fb.getEpic(3);
         fb.getEpic(4);
-        System.out.println(fb.getAllEpics());
         FileBackedTasksManager fbff = FileBackedTasksManager.loadFromFile(new File
                 ("file.csv"));
+        System.out.println(fb.getAllEpics());
         System.out.println(fbff.getAllEpics());
+        System.out.println(fb.getAllTasks());
+        System.out.println(fbff.getAllTasks());
+        System.out.println(fb.getAllSubtasks());
+        System.out.println(fbff.getAllSubtasks());
 
 
     }
@@ -133,9 +137,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                         if ((str[1]).equals("TASK")) {
                             Task task = new Task(str[2], str[4], Status.valueOf(str[3]));
                             task.setTaskId(id);
-                            if (!str[6].equals("null")) {
-                                task.setStartTime(LocalDateTime.parse(str[6]));
-                                task.setDuration(Duration.parse(str[7]));
+                            if (!str[5].equals("null")) {
+                                task.setStartTime(LocalDateTime.parse(str[5]));
+                                task.setDuration(Duration.parse(str[6]));
                             }
                             return task;
                         } else if ((str[1]).equals("SUBTASK")) {
