@@ -23,24 +23,24 @@ public class Epic extends Task{
     }
 
     public void setStatus() {
-        long countDoneStatus = 0;
-        long countNewStatus = 0;
+        long statusDone = 0;
+        long statusNew = 0;
         for (Subtask subTask : subTaskList) {
             if (subTask.getStatus().equals(IN_PROGRESS)) {
                 setStatus(IN_PROGRESS);
             }
             if (subTask.getStatus().equals(DONE)) {
-                countDoneStatus++;
+                statusDone++;
             }
             if (subTask.getStatus().equals(NEW)) {
-                countNewStatus++;
+                statusNew++;
             }
         }
-        if (countDoneStatus == subTaskList.size() && !subTaskList.isEmpty()) {
-            setStatus(DONE);
-        } else if (countDoneStatus > 0 && countDoneStatus < subTaskList.size()) {
+        if (statusDone > 0 && statusDone < subTaskList.size()) {
             setStatus(IN_PROGRESS);
-        } else if (subTaskList.isEmpty() || countNewStatus == subTaskList.size()) {
+        } else if (statusDone == subTaskList.size() && !subTaskList.isEmpty()) {
+            setStatus(DONE);
+        } else if (subTaskList.isEmpty() || statusNew == subTaskList.size()) {
             setStatus(NEW);
         }
     }
@@ -74,16 +74,16 @@ public class Epic extends Task{
         if (subTaskList.isEmpty()) {
             return null;
         }
-        LocalDateTime startTime = LocalDateTime.MAX;
+        LocalDateTime timeStart = LocalDateTime.MAX;
         for (Subtask subtask : subTaskList) {
             if (subtask.getStartTime() == null) {
                 continue;
             }
-            if (subtask.getStartTime() != null && startTime.isAfter(subtask.getStartTime())) {
-                startTime = subtask.getStartTime();
+            if (timeStart.isAfter(subtask.getStartTime()) && subtask.getStartTime() != null ) {
+                timeStart = subtask.getStartTime();
             }
         }
-        return startTime;
+        return timeStart;
     }
 
     @Override
@@ -91,16 +91,16 @@ public class Epic extends Task{
         if (subTaskList.isEmpty()) {
             return null;
         }
-        LocalDateTime endTime = LocalDateTime.MIN;
+        LocalDateTime doneTime = LocalDateTime.MIN;
         for (Subtask subtask : subTaskList) {
             if (subtask.getEndTime() == null) {
                 continue;
             }
-            if (subtask.getEndTime() != null && endTime.isBefore(subtask.getEndTime())) {
-                endTime = subtask.getEndTime();
+            if (doneTime.isBefore(subtask.getEndTime()) && subtask.getEndTime() != null) {
+                doneTime = subtask.getEndTime();
             }
         }
-        return endTime;
+        return doneTime;
     }
 
     @Override

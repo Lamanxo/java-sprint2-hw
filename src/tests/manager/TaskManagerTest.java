@@ -40,7 +40,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(0,emptyTasks.size(),"Трекер не пустой");
     }
 
-
     @Test
     public void addUpdateAndDeleteEpicTest() {
         taskManager.addEpic(new Epic ("epic1", "epic1Desc"));
@@ -57,7 +56,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(0,emptyEpics.size(),"Трекер не пустой");
 
     }
-
 
     @Test
     public void addUpdateAndDeleteSubtaskTest() {
@@ -80,8 +78,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.deleteAllSubtasks();
         final List<Subtask> subsEmpty = taskManager.getAllSubtasks();
         assertEquals(subsEmpty.size(),0,"Метод не удаляет Сабы");
-
-
     }
 
     @Test
@@ -96,7 +92,5 @@ abstract class TaskManagerTest<T extends TaskManager> {
         List<Integer> id = Arrays.asList(1, 3 ,2);
         assertEquals (taskManager.history().stream().map(Task::getTaskId).collect(Collectors.toList()), id);
     }
-
-
 
 }

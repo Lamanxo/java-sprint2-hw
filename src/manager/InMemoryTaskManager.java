@@ -158,23 +158,23 @@ public class InMemoryTaskManager implements TaskManager {
 
     private final Predicate<Task> noCrossingByTime = new Predicate<Task>() {
         @Override
-        public boolean test(Task newTask) {
-            if (newTask.getStartTime() == null) {
+        public boolean test(Task taskNew) {
+            if (taskNew.getStartTime() == null) {
                 return true;
             }
-            LocalDateTime newTaskStart = newTask.getStartTime();
-            LocalDateTime newTaskFinish = newTask.getEndTime();
-            for (Task task : prioritizedTasks) {
-                LocalDateTime taskStart = task.getStartTime();
-                LocalDateTime taskFinish = task.getEndTime();
-                if (newTaskStart.isBefore(taskStart) && newTaskFinish.isAfter(taskStart)) {
+            LocalDateTime taskNewStartTime = taskNew.getStartTime();
+            LocalDateTime taskNewEndTime = taskNew.getEndTime();
+            for (Task taskFromSet : prioritizedTasks) {
+                LocalDateTime taskStart = taskFromSet.getStartTime();
+                LocalDateTime taskFinish = taskFromSet.getEndTime();
+                if  (taskNewStartTime.isBefore(taskFinish) && taskNewEndTime.isAfter(taskFinish)) {
                     return false;
                 }
-                if (newTaskStart.isBefore(taskFinish) && newTaskFinish.isAfter(taskFinish)) {
+                if  (taskNewStartTime.isBefore(taskStart) && taskNewEndTime.isAfter(taskStart)) {
                     return false;
                 }
-                if ((newTaskStart.isBefore(taskStart) && newTaskFinish.isBefore(taskStart)) &&
-                        (newTaskStart.isBefore(taskFinish) && newTaskFinish.isBefore(taskFinish))) {
+                if ((taskNewStartTime.isBefore(taskStart) && taskNewEndTime.isBefore(taskStart)) &&
+                        (taskNewStartTime.isBefore(taskFinish) && taskNewEndTime.isBefore(taskFinish))) {
                     break;
                 }
             }

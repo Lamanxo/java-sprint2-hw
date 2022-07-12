@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FileBackedTasksManagerTest extends TaskManagerTest <FileBackedTasksManager> {
 
 
-
     @Test
     public void CheckForEpicsWithoutSubs() {
         FileBackedTasksManager fbBefore = new FileBackedTasksManager("epicTest.csv");

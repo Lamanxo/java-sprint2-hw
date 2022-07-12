@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private static List<String> taskCsv = writeCsvToArray();
+    private static List<String> taskCsv = writeFileToList();
     private static File file;
     private static final String TASK_FIELDS = "ID;TYPE;NAME;STATUS;DESCRIPTION;EPIC;StartTime;Duration;EndTime";
 
@@ -48,70 +48,39 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    public static void main(String[] args) {
 
-        FileBackedTasksManager fb = new FileBackedTasksManager("file.csv");
-        Task task = new Task("обычная задача", "Обычное описание", Status.NEW, LocalDateTime.of(2022,12,01,12,00), Duration.ofHours(12));
-        Task task1 = new Task("Обычная задача2", "Обычное описание2", Status.NEW, LocalDateTime.of(2022,12,01,12,00), Duration.ofHours(10));
-
-        Epic epic = new Epic("Эпик 1", "Описание 2");
-        Epic epic1 = new Epic("Эпик 2", "Описание 2");
-        Subtask subtask = new Subtask("Подзадача 1", "Описание 1", Status.DONE, 3,
-                LocalDateTime.now(), Duration.ofDays(4));
-        System.out.println(epic);
-        fb.addTask(task);
-        fb.addTask(task1);
-        fb.addEpic(epic);
-        fb.addEpic(epic1);
-        fb.addSubtask(subtask);
-        System.out.println(fb.getPrioritizedTasks());
-
-
-        fb.getTask(1);
-        fb.getEpic(3);
-        fb.getEpic(4);
-        FileBackedTasksManager fbff = FileBackedTasksManager.loadFromFile(new File
-                ("file.csv"));
-        System.out.println(fb.getAllEpics());
-        System.out.println(fbff.getAllEpics());
-        System.out.println(fb.getAllTasks());
-        System.out.println(fbff.getAllTasks());
-        System.out.println(fb.getAllSubtasks());
-        System.out.println(fbff.getAllSubtasks());
-
-
-    }
 
     public static FileBackedTasksManager loadFromFile(File file) {
-        FileBackedTasksManager.taskCsv = FileBackedTasksManager.writeCsvToArray();
+        FileBackedTasksManager.taskCsv = FileBackedTasksManager.writeFileToList();
         FileBackedTasksManager.setFile(file);
-        FileBackedTasksManager fileBack = new FileBackedTasksManager(file.getPath());
+        FileBackedTasksManager fb = new FileBackedTasksManager(file.getPath());
         taskCsv.remove(0);
         taskCsv.remove("HISTORY");
         for (String line : taskCsv) {
             String[] str = line.split(";");
-            if (str.length >= 5) {
-                if (str[1].equals("TASK")) {
-                    fileBack.addTask(fromString(Integer.parseInt(str[0])));
-                } else if (str[1].equals("EPIC")) {
-                    fileBack.addEpic((Epic) fromString(Integer.parseInt(str[0])));
+            if (str.length > 6) {
+                if (str[1].equals("EPIC")) {
+                    fb.addEpic((Epic) fromString(Integer.parseInt(str[0])));
+                } else if (str[1].equals("TASK")) {
+                    fb.addTask(fromString(Integer.parseInt(str[0])));
                 } else {
-                    fileBack.addSubtask((Subtask) fromString(Integer.parseInt(str[0])));
+                    fb.addSubtask((Subtask) fromString(Integer.parseInt(str[0])));
                 }
             }
         }
-        for (String line : taskCsv) {
-            String[] str = line.split(";");
+        for (String lineStr : taskCsv) {
+            String[] str = lineStr.split(";");
             if (str.length == 1) {
-                fileBack.getTask(Integer.parseInt(str[0]));
-                fileBack.getEpic(Integer.parseInt(str[0]));
-                fileBack.getSubtask(Integer.parseInt(str[0]));
+                fb.getTask(Integer.parseInt(str[0]));
+                fb.getSubtask(Integer.parseInt(str[0]));
+                fb.getEpic(Integer.parseInt(str[0]));
+
             }
         }
-        return fileBack;
+        return fb;
     }
 
-    private static List<String> writeCsvToArray() {
+    private static List<String> writeFileToList() {
         if (Files.exists(Path.of(String.valueOf(file)))) {
             List<String> brList = new ArrayList<>();
             try (BufferedReader br = new BufferedReader(new FileReader(file,
@@ -119,8 +88,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 while (br.ready()) {
                     brList.add(br.readLine());
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException exc) {
+                exc.printStackTrace();
             }
             return brList;
         }
@@ -128,8 +97,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static Task fromString(int id) {
-        for (String line : taskCsv) {
-            String[] str = line.split(";");
+        for (String lineStr : taskCsv) {
+            String[] str = lineStr.split(";");
             if (!str[0].equals("ID")) {
                 if (!str[0].equals("HISTORY")) {
                     int parseId = Integer.parseInt(str[0]);
@@ -256,5 +225,38 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         save();
     }
 
+    public static void main(String[] args) {
+
+        FileBackedTasksManager fb = new FileBackedTasksManager("file.csv");
+        Task task = new Task("обычная задача", "Обычное описание", Status.NEW, LocalDateTime.of(2022,12,01,12,00), Duration.ofHours(12));
+        Task task1 = new Task("Обычная задача2", "Обычное описание2", Status.NEW, LocalDateTime.of(2022,12,01,12,00), Duration.ofHours(10));
+
+        Epic epic = new Epic("Эпик 1", "Описание 2");
+        Epic epic1 = new Epic("Эпик 2", "Описание 2");
+        Subtask subtask = new Subtask("Подзадача 1", "Описание 1", Status.DONE, 3,
+                LocalDateTime.now(), Duration.ofDays(4));
+        System.out.println(epic);
+        fb.addTask(task);
+        fb.addTask(task1);
+        fb.addEpic(epic);
+        fb.addEpic(epic1);
+        fb.addSubtask(subtask);
+        System.out.println(fb.getPrioritizedTasks());
+
+
+        fb.getTask(1);
+        fb.getEpic(3);
+        fb.getEpic(4);
+        FileBackedTasksManager fbff = FileBackedTasksManager.loadFromFile(new File
+                ("file.csv"));
+        System.out.println(fb.getAllEpics());
+        System.out.println(fbff.getAllEpics());
+        System.out.println(fb.getAllTasks());
+        System.out.println(fbff.getAllTasks());
+        System.out.println(fb.getAllSubtasks());
+        System.out.println(fbff.getAllSubtasks());
+
+
+    }
 
 }

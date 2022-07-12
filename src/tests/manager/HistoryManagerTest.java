@@ -18,17 +18,6 @@ public class HistoryManagerTest {
     }
 
     @Test
-    public void CheckForDoublesInHistory() {
-        inMemtaskMan.addEpic(epic1);
-        inMemtaskMan.addSubtask(subtask1);
-        inMemtaskMan.addTask(task1);
-        inMemtaskMan.getTask(3);
-        inMemtaskMan.getTask(3);
-        inMemtaskMan.getEpic(1);
-        assertEquals(2, inMemtaskMan.history().size());
-    }
-
-    @Test
     public void DeleteHistoryAtBeginning() {
         inMemtaskMan.addEpic(epic1);
         inMemtaskMan.addSubtask(subtask1);
@@ -61,6 +50,17 @@ public class HistoryManagerTest {
         inMemtaskMan.getEpic(1);
         inMemtaskMan.getSubtask(2);
         inMemtaskMan.getInMemoryHistoryManager().remove(3);
+        assertEquals(2, inMemtaskMan.history().size());
+    }
+
+    @Test
+    public void CheckForDoublesInHistory() {
+        inMemtaskMan.addEpic(epic1);
+        inMemtaskMan.addSubtask(subtask1);
+        inMemtaskMan.addTask(task1);
+        inMemtaskMan.getTask(3);
+        inMemtaskMan.getTask(3);
+        inMemtaskMan.getEpic(1);
         assertEquals(2, inMemtaskMan.history().size());
     }
 }
