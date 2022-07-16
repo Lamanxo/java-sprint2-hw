@@ -12,13 +12,13 @@ public class HistoryManagerTest {
     private Task task1 = new Task("Task1Test", "Task1TestDesc", Status.NEW);
 
     @Test
-    public void CheckEmptyHistory() {
+    public void checkEmptyHistory() {
 
         assertTrue(inMemtaskMan.history().isEmpty());
     }
 
     @Test
-    public void DeleteHistoryAtBeginning() {
+    public void deleteHistoryAtBeginning() {
         inMemtaskMan.addEpic(epic1);
         inMemtaskMan.addSubtask(subtask1);
         inMemtaskMan.addTask(task1);
@@ -30,7 +30,7 @@ public class HistoryManagerTest {
     }
 
     @Test
-    public void DeleteHistoryInMiddle() {
+    public void deleteHistoryInMiddle() {
         inMemtaskMan.addEpic(epic1);
         inMemtaskMan.addSubtask(subtask1);
         inMemtaskMan.addTask(task1);
@@ -42,7 +42,7 @@ public class HistoryManagerTest {
     }
 
     @Test
-    public void DeleteHistoryAtEnd() {
+    public void deleteHistoryAtEnd() {
         inMemtaskMan.addEpic(epic1);
         inMemtaskMan.addSubtask(subtask1);
         inMemtaskMan.addTask(task1);
@@ -54,7 +54,7 @@ public class HistoryManagerTest {
     }
 
     @Test
-    public void CheckForDoublesInHistory() {
+    public void checkForDoublesInHistory() {
         inMemtaskMan.addEpic(epic1);
         inMemtaskMan.addSubtask(subtask1);
         inMemtaskMan.addTask(task1);

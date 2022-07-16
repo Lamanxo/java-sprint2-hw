@@ -227,7 +227,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
 
-        FileBackedTasksManager fb = new FileBackedTasksManager("file.csv");
+        FileBackedTasksManager fb = new FileBackedTasksManager("files/file.csv");
         Task task = new Task("обычная задача", "Обычное описание", Status.NEW, LocalDateTime.of(2022,12,01,12,00), Duration.ofHours(12));
         Task task1 = new Task("Обычная задача2", "Обычное описание2", Status.NEW, LocalDateTime.of(2022,12,01,12,00), Duration.ofHours(10));
 
@@ -248,7 +248,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fb.getEpic(3);
         fb.getEpic(4);
         FileBackedTasksManager fbff = FileBackedTasksManager.loadFromFile(new File
-                ("file.csv"));
+                ("files/file.csv"));
         System.out.println(fb.getAllEpics());
         System.out.println(fbff.getAllEpics());
         System.out.println(fb.getAllTasks());

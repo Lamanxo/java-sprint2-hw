@@ -13,13 +13,13 @@ class EpicTest {
 
 
     @Test
-    public void EpicNewWithOutSubtasks() {
+    public void epicNewWithOutSubtasks() {
         testManager.addEpic(epic);
         assertEquals(Status.NEW, testManager.getEpic(1).getStatus());
     }
 
     @Test
-    public void EpicNewWithSubtasksNew() {
+    public void epicNewWithSubtasksNew() {
         testManager.addEpic(epic);
         testManager.addSubtask(testSubtask1);
         testManager.addSubtask(testSubstask2);
@@ -27,7 +27,7 @@ class EpicTest {
     }
 
     @Test
-    public void EpicDoneWithSubtasksDone(){
+    public void epicDoneWithSubtasksDone(){
         testManager.addEpic(epic);
         testSubtask1.setStatus(Status.DONE);
         testSubstask2.setStatus(Status.DONE);
@@ -37,7 +37,7 @@ class EpicTest {
     }
 
     @Test
-    public void EpicInProgressWithSubtasksNewAndDone(){
+    public void epicInProgressWithSubtasksNewAndDone(){
         testManager.addEpic(epic);
         testSubstask2.setStatus(Status.DONE);
         testManager.addSubtask(testSubtask1);
@@ -46,7 +46,7 @@ class EpicTest {
     }
 
     @Test
-    public void EpicInProgressWithSubtasksInProgress(){
+    public void epicInProgressWithSubtasksInProgress(){
         testManager.addEpic(epic);
         testSubtask1.setStatus(Status.IN_PROGRESS);
         testSubstask2.setStatus(Status.IN_PROGRESS);

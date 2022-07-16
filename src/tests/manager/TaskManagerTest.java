@@ -14,10 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static tasks.Status.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
-     private T taskManager;
-
-    //TaskManager taskManager = Managers.getDefault();
-
+    private T taskManager;
 
     public void setTaskManager(T taskManager) {
         this.taskManager = taskManager;
