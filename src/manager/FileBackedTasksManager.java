@@ -22,6 +22,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         this.file = new File(filePath);
     }
 
+    public FileBackedTasksManager () {}
+
     public static void setFile(File file) {
         FileBackedTasksManager.file = file;
     }
@@ -142,6 +144,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     public void addEpic(Epic epic) {
         super.addEpic(epic);
         save();
+    }
+    @Override
+    public int getIdGen() {
+        return super.getIdGen();
     }
 
     @Override

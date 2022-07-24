@@ -51,4 +51,5 @@ public interface TaskManager {
 
     public Set<Task> getPrioritizedTasks();
 
+    int getIdGen();
 }

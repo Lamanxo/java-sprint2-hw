@@ -10,10 +10,10 @@ import java.util.function.Predicate;
 public class InMemoryTaskManager implements TaskManager {
     private int idGen;
     private HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private TreeSet<Task> prioritizedTasks = new TreeSet<>(new Comparator<Task>() {
+    protected HashMap<Integer, Task> tasks = new HashMap<>();
+    protected HashMap<Integer, Epic> epics = new HashMap<>();
+    protected HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    protected TreeSet<Task> prioritizedTasks = new TreeSet<>(new Comparator<Task>() {
         @Override
         public int compare(Task o1, Task o2) {
             if (o1.getStartTime() == null || o2.getStartTime() == null) {
@@ -35,6 +35,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void setIdGen() {
         idGen++;
+    }
+    @Override
+    public int getIdGen() {
+        return idGen;
     }
 
     @Override

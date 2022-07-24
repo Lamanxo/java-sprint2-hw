@@ -1,9 +1,10 @@
 package httpserver.handlers;
+
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import manager.TaskManager;
-import tasks.Task;
+import tasks.Epic;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,12 +12,11 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-public class TaskHandler implements HttpHandler {
-
+public class EpicHandler implements HttpHandler {
     private final TaskManager taskManager;
     private  final Gson gson;
 
-    public TaskHandler(TaskManager taskManager, Gson gson) {
+    public EpicHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
         this.gson = gson;
     }
@@ -25,26 +25,26 @@ public class TaskHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String str = exchange.getRequestMethod();
         if (str.equals("GET")) {
-            getRequestTask(exchange);
+            getRequestEpic(exchange);
         } else if (str.equals("POST")) {
-            postRequestTask(exchange);
+            postRequestEpic(exchange);
         } else if (str.equals("DELETE")) {
-            deleteRequestTask(exchange);
+            deleteRequestEpic(exchange);
         }
     }
 
-    public void deleteRequestTask(HttpExchange exchange) throws IOException {
+    public void deleteRequestEpic(HttpExchange exchange) throws IOException {
         URI uri = exchange.getRequestURI();
         String path = exchange.getRequestURI().getPath();
-        if (path.equals("/tasks/task/") && uri.getQuery() == null) {
-            taskManager.deleteAllTasks();
-            String response = "All Tasks deleted";
+        if (path.equals("/tasks/epic/") && uri.getQuery() == null) {
+            taskManager.deleteAllEpics();
+            String response = "All Epics deleted";
             exchange.sendResponseHeaders(200,0);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes(StandardCharsets.UTF_8));
             }
         } else if (uri.getQuery() != null) {
-            taskManager.deleteTask(getIdfromUri(uri));
+            taskManager.deleteEpic(getIdfromUri(uri));
             String response = "Task with ID " + getIdfromUri(uri) + " deleted";
             exchange.sendResponseHeaders(200,0);
             try (OutputStream os = exchange.getResponseBody()) {
@@ -53,41 +53,38 @@ public class TaskHandler implements HttpHandler {
         }
     }
 
-    public void postRequestTask(HttpExchange exchange) throws IOException {
+    public void postRequestEpic(HttpExchange exchange) throws IOException {
         InputStream is = exchange.getRequestBody();
         String body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-        Task task = gson.fromJson(body,Task.class);
-        if (task.getTaskId() != 0) {
-            taskManager.updateTask(task);
+        Epic epic = gson.fromJson(body,Epic.class);
+        if (epic.getTaskId() != 0) {
+            taskManager.updateEpic(epic);
             exchange.sendResponseHeaders(200,0);
-            String response = "Task updated!";
+            String response = "Epic updated";
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes(StandardCharsets.UTF_8));
             }
         } else {
-            taskManager.addTask(task);
+            taskManager.addEpic(epic);
             exchange.sendResponseHeaders(200,0);
-            String response = "Task added!";
+            String response = "Epic added";
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes(StandardCharsets.UTF_8));
             }
         }
     }
 
-    public void getRequestTask(HttpExchange exchange) throws IOException {
+    public void getRequestEpic(HttpExchange exchange) throws IOException {
         URI uri = exchange.getRequestURI();
         String path = exchange.getRequestURI().getPath();
-        if (path.equals("/tasks/task/") && uri.getQuery() == null) {
-            String response = gson.toJson(taskManager.getAllTasks());
+        if (path.equals("/tasks/epic/") && uri.getQuery() == null) {
+            String response = gson.toJson(taskManager.getAllEpics());
             exchange.sendResponseHeaders(200,0);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes(StandardCharsets.UTF_8));
             }
         } else if (uri.getQuery() != null) {
-            String response = gson.toJson(taskManager.getTask(getIdfromUri(uri)));
-            if (response.equals(null)) {
-                exchange.sendResponseHeaders(400,0);
-            }
+            String response = gson.toJson(taskManager.getEpic(getIdfromUri(uri)));
             exchange.sendResponseHeaders(200,0);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes(StandardCharsets.UTF_8));
@@ -100,6 +97,5 @@ public class TaskHandler implements HttpHandler {
         String str = uri.getQuery();
         return Integer.parseInt(str.split("=")[1]);
     }
+
 }
-
-
